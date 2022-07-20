@@ -1,41 +1,31 @@
-
-import io.github.bonigarcia.wdm.WebDriverManager;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
 import java.time.Duration;
-
 import java.util.List;
-
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
-
-public class HotelSearch {
-    WebDriver driver;
-
+public class HotelSearchTest extends BaseTest{
 
     @Test
-    public void hotelSearch() throws InterruptedException {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window();
+    public void hotelSearchTest() {
 
         //Warunek 'Wait' dla wszystkich kroków zawartych w tej metodzie.
-        //driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://phptravels.net/");
 
         WebElement paraText = driver.findElement(By.xpath("//span[text()=' Search by City']"));
         paraText.getText();
-        Assert.assertEquals(paraText.isDisplayed(), true);
 
         WebElement hotel = driver.findElement(By.xpath("//span[@class='select2-selection__rendered' and @id='select2-hotels_city-container']"));
         hotel.click();
@@ -88,10 +78,38 @@ public class HotelSearch {
 
         //Nie dało się znaleść pojedyńczego pola do lokalizaji z racji braku orginalnego identyfikatora
         //Więc gdy pośiadaliśmy 8 elementów z tym samym indentyfikatorem, stworzona lista Webelementów pomogła w zlokalizowaniu tego jednego
-        List<WebElement> addChild = driver.findElements(By.xpath("//div[@class='qtyInc']"));
-        addChild.get(2).click();
-        List<WebElement> childAge = driver.findElements(By.xpath("//div[@class='input-items']"));
-        childAge.get(1).click();
+        List<WebElement> addChildButton = driver.findElements(By.xpath("//div[@class='qtyInc']"));
+        addChildButton.get(2).click();
+
+        List<WebElement> childAgeInput = driver.findElements(By.xpath("//div[@class='input-items']"));
+        childAgeInput.get(1).click();
+
+
+        Select childAge = new Select(driver.findElement(By.id("ages1")));
+        Assert.assertEquals(17, childAge.getOptions().size());
+        childAge.selectByIndex(3);
+
+        driver.findElement(By.id("submit")).click();
+        driver.findElement(By.xpath("//h2[@class='sec__title_list']"));
+        Assert.assertEquals("Search Hotels in dubai", "Search Hotels in dubai", "Header is wrong");
+
+        List<String> hotelNames = driver.findElements(By.xpath("//h3[@class='card-title']"))
+                .stream()
+                .map(el -> el.getAttribute("textContent")).collect(Collectors.toList());
+        System.out.println(hotelNames.size());
+        hotelNames.forEach(el -> System.out.println(el));
+        Assert.assertEquals("Oasis Beach Tower                  \n" +
+                "                  ", hotelNames.get(0));
+        Assert.assertEquals("Malmaison Manchester                  \n" +
+                "                  ", hotelNames.get(1));
+        Assert.assertEquals("Madinah Moevenpick Hotel                  \n" +
+                "                  ", hotelNames.get(2));
+        Assert.assertEquals("Rose Rayhaan Rotana                  \n" +
+                "                  ", hotelNames.get(3));
+        Assert.assertEquals("Jumeirah Beach Hotel                  \n" +
+                "                  ", hotelNames.get(4));
+        Assert.assertEquals("Hyatt Regency Perth                  \n" +
+                "                  ", hotelNames.get(5));
 
     }
 
@@ -113,7 +131,7 @@ public class HotelSearch {
                     return false;
                 }
             }
-        }) ;
+        });
     }
 }
 

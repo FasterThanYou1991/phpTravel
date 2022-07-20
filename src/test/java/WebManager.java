@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 
 public class WebManager {
 
-    @Test
+
     public void openBrowser() {
         WebDriver driver = getDriver("chrome");
     }
