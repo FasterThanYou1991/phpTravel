@@ -1,3 +1,5 @@
+package phptravel.demo.tests;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,7 +18,7 @@ public class BaseTest {
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.get("https://phptravels.net/");
     }
-    @AfterMethod
+    //@AfterMethod
     public void tearDown(){
         driver.quit();
     }

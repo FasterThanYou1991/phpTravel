@@ -1,27 +1,12 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
+package phptravel.demo.tests;
+
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.safari.SafariDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.time.Duration;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import phptravel.demo.tests.BaseTest;
 
 
-public class SignUpTest extends BaseTest{
+public class SignUpTest extends BaseTest {
     @Test
     public void signUpFormTest() {
         driver.findElements(By.xpath("//a[@class='theme-btn theme-btn-small waves-effect' and text()='Signup']"))

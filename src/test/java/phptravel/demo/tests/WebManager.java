@@ -1,3 +1,5 @@
+package phptravel.demo.tests;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.WebDriver;
