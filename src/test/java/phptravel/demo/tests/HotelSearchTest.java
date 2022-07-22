@@ -1,10 +1,17 @@
 package phptravel.demo.tests;
 
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
 import phptravel.demo.pages.HotelSearchPage;
+import phptravel.demo.pages.ResultPage;
+
 
 
 public class HotelSearchTest extends BaseTest {
+
+    public HotelSearchTest(WebDriver driver) {
+        super();
+    }
 
     @Test
     public void hotelSearchTest() {
@@ -15,7 +22,12 @@ public class HotelSearchTest extends BaseTest {
         hotelSearchPage.setCheckIn();
         hotelSearchPage.setTravelers();
         hotelSearchPage.performSearch();
-        hotelSearchPage.assertionHeader();
+        //hotelSearchPage.assertionHeader();
+
+        ResultPage resultPage = new ResultPage(driver);
+        resultPage.getHotelNames();
+
+
 
         /*//Jest to warunek 'wait' dla konkretnego lokatora -> Explicit wait-y ignorują wyjątki np. noSuchElemenetExepction
         WebDriverWait wait = new WebDriverWait(driver, 10);

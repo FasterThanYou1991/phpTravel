@@ -1,35 +1,19 @@
 package phptravel.demo.tests;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import phptravel.demo.tests.BaseTest;
 
 
 public class SignUpTest extends BaseTest {
+
     @Test
     public void signUpFormTest() {
-        driver.findElements(By.xpath("//a[@class='theme-btn theme-btn-small waves-effect' and text()='Signup']"))
-                .stream()
-                .filter(WebElement::isDisplayed)
-                .findFirst()
-                .ifPresent(WebElement::click);
-        String lastName = "Testowy";
-        int randomNubmer = (int) (Math.random()* 1000);
-        String email = "tester" + randomNubmer + "@wp.pl";
 
-        driver.findElement(By.name("first_name")).sendKeys("Amadeusz");
-        driver.findElement(By.name("last_name")).sendKeys(lastName);
-        driver.findElement(By.name("phone")).sendKeys("111333444");
-        driver.findElement(By.name("email")).sendKeys(email);
-        driver.findElement(By.name("password")).sendKeys("2330");
-        driver.findElement(By.xpath("//span[@class='select2-selection__rendered' and @id='select2-account_type-container']")).click();
+        HotelSearchTest hotelSearchTest = new HotelSearchTest(driver);
 
-        WebElement type = driver.findElement(By.xpath("//li[text()='Customer']"));
-        if (!type.isSelected()){
-            type.click();
-        }
-        driver.findElement(By.xpath("//button[@type='submit']")).click();
 
         // 1. Przykład użycia metody lambda, do wyświetlenia nazw linków na stronie
         /*linksList.forEache(el -> System.out.println(el.getText()))*/

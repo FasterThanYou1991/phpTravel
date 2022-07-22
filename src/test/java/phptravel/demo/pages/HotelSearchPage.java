@@ -1,5 +1,6 @@
 package phptravel.demo.pages;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -11,6 +12,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import phptravel.demo.tests.BaseTest;
 
 import java.time.Duration;
 import java.util.List;
@@ -39,11 +41,16 @@ public class HotelSearchPage {
     @FindBy(id = "submit")
             private WebElement submit;
 
+    @FindBy(xpath = "//a[@href='https://phptravels.net/signup']")
+    private WebElement signupButton;
+
     private WebDriver driver;
+    WebDriverWait wait = new WebDriverWait(driver, 5);
     public HotelSearchPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
     }
+
     public void setCity(String cityName){
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()=' Search by City']")));
@@ -87,25 +94,6 @@ public class HotelSearchPage {
         driver.findElement(By.xpath("//h2[@class='sec__title_list']"));
         Assert.assertEquals("Search Hotels in dubai", "Search Hotels in dubai", "Header is wrong");
 
-        List<String> hotelNames = driver.findElements(By.xpath("//h3[@class='card-title']"))
-                .stream()
-                .map(el -> el.getAttribute("textContent"))
-                .collect(Collectors.toList());
-
-        System.out.println(hotelNames.size());
-        hotelNames.forEach(el -> System.out.println(el));
-        Assert.assertEquals("Oasis Beach Tower                  \n" +
-                "                  ", hotelNames.get(0));
-        Assert.assertEquals("Malmaison Manchester                  \n" +
-                "                  ", hotelNames.get(1));
-        Assert.assertEquals("Madinah Moevenpick Hotel                  \n" +
-                "                  ", hotelNames.get(2));
-        Assert.assertEquals("Rose Rayhaan Rotana                  \n" +
-                "                  ", hotelNames.get(3));
-        Assert.assertEquals("Jumeirah Beach Hotel                  \n" +
-                "                  ", hotelNames.get(4));
-        Assert.assertEquals("Hyatt Regency Perth                  \n" +
-                "                  ", hotelNames.get(5));
     }
     // Metoda ta może być użyta to sprwdzenia czy dane elementy o podanym lokatorze istnieją na stronie.
     // Aby ja użyc wystarczy ja potem wywołać i podać lokator.
@@ -131,5 +119,10 @@ public class HotelSearchPage {
 
     public void performSearch() {
         submit.click();
+    }
+
+    public void openSignUpForm(){
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='https://phptravels.net/signup']")));
+            signupButton.click();
     }
 }
