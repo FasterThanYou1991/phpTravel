@@ -8,6 +8,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.BeforeMethod;
 import phptravel.demo.utils.DriverFactory;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -16,9 +17,8 @@ import java.util.function.Function;
 public class BaseTest {
     public WebDriver driver;
     @BeforeMethod
-    public void setup(){
-
-        driver = DriverFactory.getDriver("firefox");
+    public void setup() throws IOException {
+        driver = DriverFactory.getDriver();
         driver.manage().window();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.get("https://phptravels.net/");

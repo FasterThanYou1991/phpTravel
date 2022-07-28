@@ -20,7 +20,7 @@ public class HotelSearchTest extends BaseTest {
         //hotelSearchPage.assertionHeader();
 
         ResultPage resultPage = new ResultPage(driver);
-        System.out.print(resultPage.getHotelNames());
+        System.out.print(resultPage.getHotelNames().size());
     }
 }
 
