@@ -3,21 +3,20 @@ package phptravel.demo.pages;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import phptravel.demo.utils.SeleniumHelper;
 
-import java.time.Duration;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.function.Function;
+import java.util.Locale;
 
 
 public class HotelSearchPage {
@@ -27,8 +26,7 @@ public class HotelSearchPage {
     private WebElement searchHotelInput;
     @FindBy(name = "checkin")
     private WebElement checkin;
-
-    @FindBy(xpath = "//td[@class='day ' and text()='29']")
+    @FindBy(name = "checkout")
     private WebElement checkOut;
     @FindBy(xpath = "//span[@class='guest_hotels']")
     private WebElement travellersDropdown;
@@ -57,38 +55,67 @@ public class HotelSearchPage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
     }
 
-    public HotelSearchPage setCity(String cityName) {
+    public void setCity(String cityName) {
         Logger.info("Setting city" + cityName);
         waitMethod("//span[text()=' Search by City']");
         searchHotelSpan.click();
         searchHotelInput.sendKeys(cityName);
         String xpath = String.format("//li[contains(text(),'%s')]", cityName);
-        waitForElementToExist(By.xpath(xpath));
+        waitMethod(xpath);
         driver.findElement(By.xpath(xpath)).click();
         Logger.info("Setting city done");
-        return this;
     }
 
-    public HotelSearchPage setCheckIn() {
+    public void setCheckIn(String date) {
 
         checkin.click();
-        Logger.info("Set checkin date and Check out" );
-        driver.findElements(By.xpath("//td[ @class='day  new' and (text()='3')]"))
+        Logger.info("Set checkin date" );
+
+        WebElement eval = driver.findElement(By.xpath("//div[contains(@class,'datepicker-days')]/table/tbody"));
+        List<WebElement> alldates = eval.findElements(By.tagName("td"));
+        for(WebElement cell : alldates){
+            String day = cell.getText();
+            if (cell.getText().equals(date)) {
+                WebElement selectDay = driver.findElement(By.xpath("//td[@class='day ' and text()='"+day+"']"));
+                selectDay.isDisplayed();
+                selectDay.click();
+                break;
+            }
+        }
+        // Alternative approach for selecting visible day from calendar
+        /*driver.findElements(By.xpath("//td[ @class='day  new' and (text()='3')]"))
                 .stream()
                 .filter(WebElement::isDisplayed)
                 .findFirst()
-                .ifPresent(WebElement::click);
+                .ifPresent(WebElement::click);*/
 
-        driver.findElements(By.xpath("//td[@class='day  new' and (text()='6')]"))
+        Logger.info("Checkin is set");
+    }
+
+    public void setCheckOut(String date){
+        Logger.info("Set Check out date" );
+
+        WebElement eval = driver.findElement(By.xpath("//div[contains(@class,'datepicker-days')]/table/tbody"));
+        List<WebElement> alldates = eval.findElements(By.tagName("td"));
+        for(WebElement cell : alldates){
+            String day = cell.getText();
+            if (cell.getText().equals(date)) {
+                WebElement selectDay = driver.findElement(By.xpath("//td[@class='day ' and text()='"+day+"']"));
+                selectDay.isDisplayed();
+                selectDay.click();
+                break;
+            }
+        }
+        // Alternative approach for selecting visible day from calendar
+        /*driver.findElements(By.xpath("//td[@class='day  new' and (text()='6')]"))
                 .stream()
                 .filter(element -> element.isDisplayed())
                 .findFirst()
-                .ifPresent(element -> element.click());
-        Logger.info("Checkin and Checkout is set");
-        return this;
+                .ifPresent(element -> element.click());*/
+        Logger.info("Checkout is set");
     }
 
-    public HotelSearchPage setTravelers() {
+    public void setTravelers() {
         Logger.info("Setting travellers");
         travellersDropdown.click();
         rooms.click();
@@ -104,32 +131,13 @@ public class HotelSearchPage {
         Assert.assertEquals(17, childAge.getOptions().size());
         childAge.selectByIndex(3);
         Logger.info("Traveleres are set");
-        return this;
     }
 
-    public void assertionHeader() {
-        driver.findElement(By.xpath("//h2[@class='sec__title_list']"));
-        Assert.assertEquals("Search Hotels in dubai", "Search Hotels in dubai", "Header is wrong");
-
-    }
-
-    public void waitForElementToExist(By locator) {
-        FluentWait<WebDriver> wait = new FluentWait<>(driver);
-        wait.ignoring(NoSuchElementException.class);
-        wait.withTimeout(Duration.ofSeconds(5));
-        wait.until(new Function<WebDriver, Boolean>() {
-            @Override
-            public Boolean apply(WebDriver driver) {
-                List<WebElement> elements = driver.findElements(locator);
-                if (elements.size() > 0) {
-                    System.out.println("Element jest na stronie");
-                    return true;
-                } else {
-                    System.out.println("Nie ma na stronie tego elementu");
-                    return false;
-                }
-            }
-        });
+    public void assertionHeader(String cityName) {
+        String xpath = String.format("//h2[contains(text(),'%s')]", cityName.toLowerCase(Locale.ROOT));
+        waitMethod(xpath);
+        driver.findElement(By.xpath(xpath));
+        Logger.info("Hotels are founded in " + cityName);
     }
 
     public ResultPage performSearch() {
