@@ -1,11 +1,16 @@
 package phptravel.demo.tests;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+import com.fasterxml.jackson.databind.deser.impl.ExternalTypeHandler;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.FluentWait;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 import phptravel.demo.utils.DriverFactory;
 
 import java.io.IOException;
@@ -15,7 +20,25 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 public class BaseTest {
+
     public WebDriver driver;
+
+    protected static ExtentHtmlReporter htmlReporter;
+    protected static ExtentReports extentReports;
+
+    @BeforeSuite
+    public void beforeSuit(){
+        htmlReporter = new ExtentHtmlReporter("index.html");
+        extentReports = new ExtentReports();
+        extentReports.attachReporter(htmlReporter);
+    }
+
+    @AfterSuite
+    public void afterSuit(){
+        htmlReporter.flush();
+        extentReports.flush();
+    }
+
     @BeforeMethod
     public void setup() throws IOException {
         driver = DriverFactory.getDriver();
