@@ -1,9 +1,17 @@
 package phptravel.demo.pages;
 
-import org.openqa.selenium.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.time.Duration;
@@ -36,6 +44,8 @@ public class HotelSearchPage {
 
     private WebDriver driver;
 
+    private static final Logger Logger = LogManager.getLogger();
+
     public HotelSearchPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
@@ -46,32 +56,39 @@ public class HotelSearchPage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
     }
 
-    public void setCity(String cityName) {
+    public HotelSearchPage setCity(String cityName) {
+        Logger.info("Setting city" + cityName);
         waitMethod("//span[text()=' Search by City']");
         searchHotelSpan.click();
         searchHotelInput.sendKeys(cityName);
         String xpath = String.format("//li[contains(text(),'%s')]", cityName);
         waitForElementToExist(By.xpath(xpath));
         driver.findElement(By.xpath(xpath)).click();
+        Logger.info("Setting city done");
+        return this;
     }
 
-    public void setCheckIn() {
+    public HotelSearchPage setCheckIn() {
 
         checkin.click();
-        driver.findElements(By.xpath("//td[@class='day ' and text()='26']"))
+        Logger.info("Set checkin date and Check out" );
+        driver.findElements(By.xpath("//td[ @class='day  new' and (text()='3')]"))
                 .stream()
                 .filter(WebElement::isDisplayed)
                 .findFirst()
                 .ifPresent(WebElement::click);
 
-        driver.findElements(By.xpath("//td[@class='day ' and text()='30']"))
+        driver.findElements(By.xpath("//td[@class='day  new' and (text()='6')]"))
                 .stream()
                 .filter(element -> element.isDisplayed())
                 .findFirst()
                 .ifPresent(element -> element.click());
+        Logger.info("Checkin and Checkout is set");
+        return this;
     }
 
-    public void setTravelers() {
+    public HotelSearchPage setTravelers() {
+        Logger.info("Setting travellers");
         travellersDropdown.click();
         rooms.click();
         driver.findElements(By.xpath("//div[@class='qtyInc']"))
@@ -85,6 +102,8 @@ public class HotelSearchPage {
         Select childAge = new Select(driver.findElement(By.id("ages1")));
         Assert.assertEquals(17, childAge.getOptions().size());
         childAge.selectByIndex(3);
+        Logger.info("Traveleres are set");
+        return this;
     }
 
     public void assertionHeader() {
@@ -112,8 +131,9 @@ public class HotelSearchPage {
         });
     }
 
-    public void performSearch() {
+    public ResultPage performSearch() {
         submit.click();
+        return new ResultPage(driver);
     }
 
 

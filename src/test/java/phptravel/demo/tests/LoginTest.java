@@ -10,8 +10,8 @@ public class LoginTest extends BaseTest{
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.openLoginPage();
-
-        loginPage.setPasswordInput("1234");
+        loginPage.setEmailLoginInput("");
+        loginPage.setPasswordLoginInput("1234");
         loginPage.performLogin();
 
 

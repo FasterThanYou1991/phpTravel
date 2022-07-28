@@ -1,13 +1,12 @@
 package phptravel.demo.tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.BeforeMethod;
+import phptravel.demo.utils.DriverFactory;
 
 import java.time.Duration;
 import java.util.List;
@@ -18,8 +17,8 @@ public class BaseTest {
     public WebDriver driver;
     @BeforeMethod
     public void setup(){
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+
+        driver = DriverFactory.getDriver("firefox");
         driver.manage().window();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.get("https://phptravels.net/");

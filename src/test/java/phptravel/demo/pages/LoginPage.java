@@ -47,7 +47,7 @@ public class LoginPage extends SignUpPage {
     public void setEmailLoginInput(String email){
         emailLoginInput.sendKeys(email);
     }
-    public void setPasswordInput(String password){
+    public void setPasswordLoginInput(String password){
         passwordLoginInput.sendKeys(password);
     }
 

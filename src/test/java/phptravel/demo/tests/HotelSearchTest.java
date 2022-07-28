@@ -13,11 +13,10 @@ public class HotelSearchTest extends BaseTest {
     public void hotelSearchTest() {
 
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        hotelSearchPage.setCity("Dubai");
-
-        hotelSearchPage.setCheckIn();
-        hotelSearchPage.setTravelers();
-        hotelSearchPage.performSearch();
+        hotelSearchPage.setCity("Dubai")
+            .setCheckIn()
+            .setTravelers()
+            .performSearch();
         //hotelSearchPage.assertionHeader();
 
         ResultPage resultPage = new ResultPage(driver);

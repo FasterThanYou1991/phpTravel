@@ -7,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import phptravel.demo.model.User;
 import phptravel.demo.tests.BaseTest;
 
 
@@ -55,6 +54,35 @@ public class SignUpPage extends BaseTest {
         signupButton.click();
     }
 
+    public SignUpPage setFirstName(String firstName){
+        String firstNameText = "Tester";
+        firstNameInput.sendKeys(firstNameText + firstName);
+        return this;
+    }
+
+    public SignUpPage setLastName(String lastName){
+        String lastNameText = "Testowy";
+        lastNameInput.sendKeys(lastNameText + lastName);
+        return this;
+    }
+
+    public SignUpPage setPhoneInput(String phone){
+        phoneInput.sendKeys(phone);
+        return this;
+    }
+
+    public SignUpPage setEmailInput(String email){
+        int randomNumber = (int) (Math.random()* 1000);
+        String randomEmail = "tester" + randomNumber + "@wp.pl";
+        emailInput.sendKeys(randomEmail);
+        return this;
+    }
+
+    public SignUpPage setPasswordInput(String password){
+        passwordInput.sendKeys(password);
+        return this;
+    }
+
     public void accountTypeDropdown(String type) {
         waitMethod("//span[@id='select2-account_type-container']");
         accountType.click();
@@ -63,28 +91,9 @@ public class SignUpPage extends BaseTest {
         driver.findElement(By.xpath(xpath)).click();
     }
 
-    public void performSubmit() {
+    public SignUpPage performSubmit() {
         buttonSubmit.click();
-    }
-
-    public void fillSignUpForm(String firstName, String lastName, String phone, String email, String password, String accountType) {
-        firstNameInput.sendKeys(firstName);
-        lastNameInput.sendKeys(lastName);
-        phoneInput.sendKeys(phone);
-        emailInput.sendKeys(email);
-        passwordInput.sendKeys(password);
-        accountTypeDropdown(accountType);
-        performSubmit();
-    }
-
-    public void fillSignUpForm(User user) {
-        firstNameInput.sendKeys(user.getFirstName());
-        lastNameInput.sendKeys(user.getLastName());
-        phoneInput.sendKeys(user.getPhone());
-        emailInput.sendKeys(user.getEmail());
-        passwordInput.sendKeys(user.getPassword());
-        //accountTypeDropdown(accountType);
-        buttonSubmit.click();
+        return this;
     }
 }
 
