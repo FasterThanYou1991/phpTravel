@@ -5,18 +5,17 @@ import com.aventstack.extentreports.Status;
 import org.testng.annotations.Test;
 import phptravel.demo.pages.HotelSearchPage;
 import phptravel.demo.pages.ResultPage;
+import phptravel.demo.utils.SeleniumHelper;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Date;
 
 
 public class HotelSearchTest extends BaseTest {
 
     private String cityName = "Dubai";
     @Test
-    public void hotelSearchTest() {
+    public void hotelSearchTest() throws IOException {
         LocalDate day = LocalDate.now();
         int currentDayIn = day.getDayOfMonth();
         int currentDayOut = currentDayIn + 2;
@@ -24,7 +23,7 @@ public class HotelSearchTest extends BaseTest {
         ExtentTest test = extentReports.createTest("Search hotel Test");
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
         hotelSearchPage.setCity(cityName);
-        test.log(Status.PASS, "Setting city is done");
+        test.log(Status.PASS, "Setting city is done", SeleniumHelper.getScreenshot(driver));
         hotelSearchPage.setCheckIn(String.valueOf(currentDayIn));
         test.log(Status.PASS, "Checkin date is set");
         hotelSearchPage.setCheckOut(String.valueOf(currentDayOut));

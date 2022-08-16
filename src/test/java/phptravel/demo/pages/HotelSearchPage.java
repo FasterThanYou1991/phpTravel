@@ -1,10 +1,11 @@
 package phptravel.demo.pages;
 
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.MediaEntityModelProvider;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -12,6 +13,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,7 +69,7 @@ public class HotelSearchPage {
         Logger.info("Setting city done");
     }
 
-    public void setCheckIn(String date) {
+    public void setCheckIn(String dateIn) {
 
         checkin.click();
         Logger.info("Set checkin date" );
@@ -74,9 +77,9 @@ public class HotelSearchPage {
         WebElement eval = driver.findElement(By.xpath("//div[contains(@class,'datepicker-days')]/table/tbody"));
         List<WebElement> alldates = eval.findElements(By.tagName("td"));
         for(WebElement cell : alldates){
-            String day = cell.getText();
-            if (cell.getText().equals(date)) {
-                WebElement selectDay = driver.findElement(By.xpath("//td[@class='day ' and text()='"+day+"']"));
+            String dayIn = cell.getText();
+            if (cell.getText().equals(dateIn)) {
+                WebElement selectDay = driver.findElement(By.xpath("//td[@class='day ' and text()='"+dayIn+"']"));
                 selectDay.isDisplayed();
                 selectDay.click();
                 break;
@@ -92,17 +95,17 @@ public class HotelSearchPage {
         Logger.info("Checkin is set");
     }
 
-    public void setCheckOut(String date){
+    public void setCheckOut(String dateOut){
         Logger.info("Set Check out date" );
 
         WebElement eval = driver.findElement(By.xpath("//div[contains(@class,'datepicker-days')]/table/tbody"));
         List<WebElement> alldates = eval.findElements(By.tagName("td"));
         for(WebElement cell : alldates){
-            String day = cell.getText();
-            if (cell.getText().equals(date)) {
-                WebElement selectDay = driver.findElement(By.xpath("//td[@class='day ' and text()='"+day+"']"));
-                selectDay.isDisplayed();
-                selectDay.click();
+            String dayOut = cell.getText();
+            if (cell.getText().equals(dateOut)) {
+                WebElement selectDayOut = driver.findElement(By.xpath("//td[@class='day ' and text()='"+dayOut+"']"));
+                selectDayOut.isDisplayed();
+                selectDayOut.click();
                 break;
             }
         }
@@ -151,6 +154,4 @@ public class HotelSearchPage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='https://phptravels.net/signup']")));
         signupButton.click();
     }
-
-
 }
