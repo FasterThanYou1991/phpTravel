@@ -1,27 +1,41 @@
 package phptravel.demo.tests;
 
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import org.testng.annotations.Test;
 import phptravel.demo.pages.HotelSearchPage;
 import phptravel.demo.pages.ResultPage;
+import phptravel.demo.utils.SeleniumHelper;
 
+import java.io.IOException;
+import java.time.LocalDate;
 
 
 public class HotelSearchTest extends BaseTest {
 
-
+    private String cityName = "Dubai";
     @Test
-    public void hotelSearchTest() {
+    public void hotelSearchTest() throws IOException {
+        LocalDate day = LocalDate.now();
+        int currentDayIn = day.getDayOfMonth();
+        int currentDayOut = currentDayIn + 2;
 
+        ExtentTest test = extentReports.createTest("Search hotel Test");
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        hotelSearchPage.setCity("Dubai");
-
-        hotelSearchPage.setCheckIn();
+        hotelSearchPage.setCity(cityName);
+        test.log(Status.PASS, "Setting city is done", SeleniumHelper.getScreenshot(driver));
+        hotelSearchPage.setCheckIn(String.valueOf(currentDayIn));
+        test.log(Status.PASS, "Checkin date is set");
+        hotelSearchPage.setCheckOut(String.valueOf(currentDayOut));
+        test.log(Status.PASS, "Checkout date is set");
         hotelSearchPage.setTravelers();
+        test.log(Status.PASS, "Rooms, Adults and childs are configured ");
         hotelSearchPage.performSearch();
-        //hotelSearchPage.assertionHeader();
+        hotelSearchPage.assertionHeader(cityName);
+        test.log(Status.PASS, "Searching the hotels is done");
 
         ResultPage resultPage = new ResultPage(driver);
-        System.out.print(resultPage.getHotelNames());
+        System.out.print(resultPage.getHotelNames().size());
     }
 }
 
