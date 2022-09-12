@@ -9,12 +9,13 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-import phptravel.demo.utils.SeleniumHelper;
 
 import java.util.List;
 
+import static phptravel.demo.utils.SeleniumHelper.waitMethod;
 
-public class HotelSearchPage extends SeleniumHelper {
+
+public class HotelSearchPage{
     @FindBy(xpath = "//span[@id='select2-hotels_city-container' and @title=' Search by City']")
     private WebElement searchHotelSpan;
     @FindBy(xpath = "//input[@class='select2-search__field']")

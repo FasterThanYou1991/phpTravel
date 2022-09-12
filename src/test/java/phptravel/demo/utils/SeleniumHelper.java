@@ -27,7 +27,7 @@ public class SeleniumHelper {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(driver1 -> driver.findElements(locator).size()>0);
     }
-    public void waitMethod(String xpath, WebDriver driver) {
+    public static void waitMethod(String xpath, WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
     }

@@ -12,7 +12,9 @@ import phptravel.demo.utils.SeleniumHelper;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ResultPage extends SeleniumHelper {
+import static phptravel.demo.utils.SeleniumHelper.waitMethod;
+
+public class ResultPage{
 
     private static final org.apache.logging.log4j.Logger Logger = LogManager.getLogger();
     @FindBy(xpath = "//h3[@class='card-title']")

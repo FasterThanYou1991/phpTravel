@@ -7,7 +7,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import phptravel.demo.utils.SeleniumHelper;
 
-public class LoggedUserPage extends SeleniumHelper {
+import static phptravel.demo.utils.SeleniumHelper.waitMethod;
+
+public class LoggedUserPage{
     private WebDriver driver;
 
     @FindBy(xpath = "//span[text()='Welcome Back']")

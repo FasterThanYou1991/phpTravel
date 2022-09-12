@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="All test Suite">
+    <test name="Hotel Search" thread-count="3" parallel="methods">
+        <classes>
+            <class name="phptravel.demo.tests.HotelSearchTest"/>
+        </classes>
+    </test>
+    <test name="Login Test" thread-count="3" parallel="methods">
+        <classes>
+            <class name="phptravel.demo.tests.LoginTest"/>
+        </classes>
+    </test>
+</suite>
