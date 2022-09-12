@@ -12,6 +12,7 @@ import java.io.IOException;
 
 public class SeleniumHelper {
 
+
     public static void waitForElementToExist(WebDriver driver, By locator) {
         WebDriverWait wait = new WebDriverWait(driver, 10l);
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
@@ -25,6 +26,10 @@ public class SeleniumHelper {
     public static void waitForNotEmptyList(WebDriver driver, By locator) {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(driver1 -> driver.findElements(locator).size()>0);
+    }
+    public void waitMethod(String xpath, WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
     }
 
     public static MediaEntityModelProvider getScreenshot(WebDriver driver) throws IOException {

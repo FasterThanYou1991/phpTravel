@@ -1,29 +1,21 @@
 package phptravel.demo.pages;
 
-import com.aventstack.extentreports.MediaEntityBuilder;
-import com.aventstack.extentreports.MediaEntityModelProvider;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
+import phptravel.demo.utils.SeleniumHelper;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 
-public class HotelSearchPage {
-    @FindBy(xpath = "//span[text()=' Search by City']")
+public class HotelSearchPage extends SeleniumHelper {
+    @FindBy(xpath = "//span[@id='select2-hotels_city-container' and @title=' Search by City']")
     private WebElement searchHotelSpan;
     @FindBy(xpath = "//input[@class='select2-search__field']")
     private WebElement searchHotelInput;
@@ -35,14 +27,20 @@ public class HotelSearchPage {
     private WebElement travellersDropdown;
     @FindBy(xpath = "//div[@class='roomInc' and i[@class='la la-plus']]")
     private WebElement rooms;
-    @FindBy(xpath = "//div[@class='qtyInc']")
+    @FindBy(xpath = "//input[@id='adults']")
     private WebElement addAdults;
-    @FindBy(xpath = "//div[@class='qtyInc']")
+    @FindBy(xpath = "//input[@id='childs']")
     private WebElement addChilds;
     @FindBy(id = "submit")
     private WebElement submit;
     @FindBy(xpath = "//a[@href='https://phptravels.net/signup']")
     private WebElement signupButton;
+
+    @FindBy(id = "ACCOUNT")
+    private WebElement accountDropdown;
+
+    @FindBy(xpath = "//a[@href='https://phptravels.net/login']")
+    private WebElement customerLogin;
 
     private WebDriver driver;
 
@@ -53,30 +51,24 @@ public class HotelSearchPage {
         this.driver = driver;
     }
 
-    public void waitMethod(String xpath) {
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
-    }
-
     public void setCity(String cityName) {
-        Logger.info("Setting city" + cityName);
-        waitMethod("//span[text()=' Search by City']");
+        waitMethod("//span[@id='select2-hotels_city-container' and @title=' Search by City']", driver);
         searchHotelSpan.click();
-        searchHotelInput.sendKeys(cityName);
+        searchHotelInput.sendKeys(cityName);Logger.info("City Name was entered" + cityName);
+        Logger.info("City Name was entered" + cityName);
         String xpath = String.format("//li[contains(text(),'%s')]", cityName);
-        waitMethod(xpath);
+        waitMethod(xpath,driver);
+        Logger.info("Element with city name exist" + "--> " + cityName);
         driver.findElement(By.xpath(xpath)).click();
-        Logger.info("Setting city done");
     }
 
     public void setCheckIn(String dateIn) {
 
         checkin.click();
-        Logger.info("Set checkin date" );
-
         WebElement eval = driver.findElement(By.xpath("//div[contains(@class,'datepicker-days')]/table/tbody"));
-        List<WebElement> alldates = eval.findElements(By.tagName("td"));
-        for(WebElement cell : alldates){
+        waitMethod("//div[contains(@class,'datepicker-days')]/table/tbody", driver);
+        List<WebElement> allDates = eval.findElements(By.tagName("td"));
+        for(WebElement cell : allDates){
             String dayIn = cell.getText();
             if (cell.getText().equals(dateIn)) {
                 WebElement selectDay = driver.findElement(By.xpath("//td[@class='day ' and text()='"+dayIn+"']"));
@@ -92,15 +84,15 @@ public class HotelSearchPage {
                 .findFirst()
                 .ifPresent(WebElement::click);*/
 
-        Logger.info("Checkin is set");
+        Logger.info("CheckIn date was selected: " + dateIn);
     }
 
     public void setCheckOut(String dateOut){
-        Logger.info("Set Check out date" );
 
         WebElement eval = driver.findElement(By.xpath("//div[contains(@class,'datepicker-days')]/table/tbody"));
-        List<WebElement> alldates = eval.findElements(By.tagName("td"));
-        for(WebElement cell : alldates){
+        //waitMethod("//div[contains(@class,'datepicker-days')]/table/tbody", driver);
+        List<WebElement> allDates = eval.findElements(By.tagName("td"));
+        for(WebElement cell : allDates){
             String dayOut = cell.getText();
             if (cell.getText().equals(dateOut)) {
                 WebElement selectDayOut = driver.findElement(By.xpath("//td[@class='day ' and text()='"+dayOut+"']"));
@@ -115,43 +107,51 @@ public class HotelSearchPage {
                 .filter(element -> element.isDisplayed())
                 .findFirst()
                 .ifPresent(element -> element.click());*/
-        Logger.info("Checkout is set");
+        Logger.info("ChecOut date was selected : " + dateOut);
     }
 
     public void setTravelers() {
-        Logger.info("Setting travellers");
         travellersDropdown.click();
-        rooms.click();
-        driver.findElements(By.xpath("//div[@class='qtyInc']"))
-                .stream()
-                .filter(element -> element.isDisplayed())
-                .findFirst()
-                .ifPresent(element -> element.click());
+        Logger.info("Travelers dropDown was clicked");
 
-        List<WebElement> addChildButton = driver.findElements(By.xpath("//div[@class='qtyInc']"));
-        addChildButton.get(2).click();
-        Select childAge = new Select(driver.findElement(By.id("ages1")));
-        Assert.assertEquals(17, childAge.getOptions().size());
-        childAge.selectByIndex(3);
-        Logger.info("Traveleres are set");
+        rooms.click();
+        Logger.info("Rooms was selected");
+        Actions adults = new Actions(driver);
+        adults.doubleClick(addAdults);
+        addAdults.clear();
+        addAdults.sendKeys("2");
+        Logger.info("Adults was added by using input");
+
+        Actions child = new Actions(driver);
+        child.doubleClick(addChilds);
+        addChilds.clear();
+        addChilds.sendKeys("3");
+        Logger.info("Child was added by using input");
     }
 
-    public void assertionHeader(String cityName) {
-        String xpath = String.format("//h2[contains(text(),'%s')]", cityName.toLowerCase(Locale.ROOT));
-        waitMethod(xpath);
-        driver.findElement(By.xpath(xpath));
-        Logger.info("Hotels are founded in " + cityName);
+    public void setNationality(){
+        String nationality = "Poland";
+        Select select = new Select(driver.findElement(By.id("nationality")));
+        select.selectByVisibleText(nationality);
+        Logger.info("Nationality was selected by text value in dropdown" + "--> " + nationality);
     }
 
     public ResultPage performSearch() {
         submit.click();
         return new ResultPage(driver);
     }
+    public void selectAccountDropdown(){
+        accountDropdown.click();
+    }
 
+    public LoginPage selectCustomerLogin(){
+        waitMethod("//a[@href='https://phptravels.net/login']",driver);
+        customerLogin.click();
+        return new LoginPage(driver);
+    }
 
     public void openSignUpForm() {
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='https://phptravels.net/signup']")));
+        waitMethod("//a[@href='https://phptravels.net/signup']",driver);
         signupButton.click();
     }
 }

@@ -13,30 +13,27 @@ import java.time.LocalDate;
 
 public class HotelSearchTest extends BaseTest {
 
-    private String cityName = "Dubai";
+    private String cityName = "London";
     @Test
     public void hotelSearchTest() throws IOException {
         LocalDate day = LocalDate.now();
-        int currentDayIn = day.getDayOfMonth();
+        int currentDayIn = day.getDayOfMonth() + 1;
         int currentDayOut = currentDayIn + 2;
 
         ExtentTest test = extentReports.createTest("Search hotel Test");
+
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
         hotelSearchPage.setCity(cityName);
-        test.log(Status.PASS, "Setting city is done", SeleniumHelper.getScreenshot(driver));
         hotelSearchPage.setCheckIn(String.valueOf(currentDayIn));
-        test.log(Status.PASS, "Checkin date is set");
         hotelSearchPage.setCheckOut(String.valueOf(currentDayOut));
-        test.log(Status.PASS, "Checkout date is set");
         hotelSearchPage.setTravelers();
-        test.log(Status.PASS, "Rooms, Adults and childs are configured ");
+        hotelSearchPage.setNationality();
+        test.log(Status.PASS, "City name, checkIn, checkOut, travellers and nationality was set correctly ", SeleniumHelper.getScreenshot(driver));
         hotelSearchPage.performSearch();
-        hotelSearchPage.assertionHeader(cityName);
-        test.log(Status.PASS, "Searching the hotels is done");
 
         ResultPage resultPage = new ResultPage(driver);
-        System.out.print(resultPage.getHotelNames().size());
+        resultPage.assertionHeader(driver);
+        resultPage.getHotelNames();
+        test.log(Status.PASS,"Result of hotel names", SeleniumHelper.getScreenshot(driver));
     }
 }
-
-
