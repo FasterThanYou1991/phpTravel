@@ -10,14 +10,16 @@ public class SignUpTest extends BaseTest {
     public void signUpTest() {
 
         SignUpPage signUpPage = new SignUpPage(driver);
-        signUpPage.openSignUpForm();
+        signUpPage.selectAccountDropdown();
+        signUpPage.selectCustomerSignup();
         signUpPage.setFirstName("")
             .setLastName("")
             .setPhoneInput("456233445")
             .setEmailInput("")
             .setPasswordInput("1234")
             .accountTypeDropdown("Agent");
-        signUpPage.performSubmit();
+        signUpPage.selectCheckboxRecaptcha();
+        //signUpPage.performSubmit();
 
 
 /*        @Test

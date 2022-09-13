@@ -13,8 +13,8 @@ import phptravel.demo.tests.BaseTest;
 
 public class SignUpPage extends BaseTest {
 
-    @FindBy(xpath = "//a[@href='https://phptravels.net/signup']")
-    private WebElement signupButton;
+    @FindBy(id = "ACCOUNT")
+    private WebElement accountDropdown;
     @FindBy(name = "first_name")
     private WebElement firstNameInput;
 
@@ -33,8 +33,14 @@ public class SignUpPage extends BaseTest {
     @FindBy(xpath = "//span[@id='select2-account_type-container']")
     private WebElement accountType;
 
+    @FindBy(xpath = "//label")
+    private WebElement reCaptcha;
+
     @FindBy(xpath = "//button[@type='submit']")
     private WebElement buttonSubmit;
+
+    @FindBy(xpath = "//a[@href='https://phptravels.net/signup']")
+    private WebElement customerSignup;
 
 
     private WebDriver driver;
@@ -49,9 +55,13 @@ public class SignUpPage extends BaseTest {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
     }
 
-    public void openSignUpForm() {
-        waitMethod("//a[@href='https://phptravels.net/signup']");
-        signupButton.click();
+    public void selectAccountDropdown() {
+        accountDropdown.click();
+    }
+    public LoginPage selectCustomerSignup(){
+        waitMethod("//a[@href='https://phptravels.net/signup']",driver);
+        customerSignup.click();
+        return new LoginPage(driver);
     }
 
     public SignUpPage setFirstName(String firstName){
@@ -90,6 +100,15 @@ public class SignUpPage extends BaseTest {
         waitMethod(xpath);
         driver.findElement(By.xpath(xpath)).click();
     }
+
+    public void selectCheckboxRecaptcha(){
+            WebDriverWait wait = new WebDriverWait(driver, 5);
+            wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.xpath("//iframe[@title='reCAPTCHA']")));
+            WebElement captchaCheckbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='recaptcha-checkbox-border']")));
+            captchaCheckbox.click();
+        }
+
+
 
     public SignUpPage performSubmit() {
         buttonSubmit.click();
