@@ -3,23 +3,26 @@ package phptravel.demo.tests;
 import org.testng.annotations.Test;
 import phptravel.demo.pages.SignUpPage;
 
+import java.util.concurrent.ExecutionException;
+
 
 public class SignUpTest extends BaseTest {
 
     @Test
-    public void signUpTest() {
+    public void signUpTest() throws InterruptedException, ExecutionException {
 
         SignUpPage signUpPage = new SignUpPage(driver);
         signUpPage.selectAccountDropdown();
         signUpPage.selectCustomerSignup();
-        signUpPage.setFirstName("")
-            .setLastName("")
-            .setPhoneInput("456233445")
-            .setEmailInput("")
-            .setPasswordInput("1234")
-            .accountTypeDropdown("Agent");
+        signUpPage.setFirstName("");
+        signUpPage.setLastName("");
+        signUpPage.setPhoneInput("456233445");
+        signUpPage.setEmailInput("");
+        signUpPage.setPasswordInput("1234");
+        signUpPage.acceptCookie();
+        signUpPage.accountTypeDropdown("Agent");
         signUpPage.selectCheckboxRecaptcha();
-        //signUpPage.performSubmit();
+        signUpPage.performSubmit();
 
 
 /*        @Test

@@ -5,10 +5,14 @@ import com.aventstack.extentreports.MediaEntityModelProvider;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.util.List;
+import java.util.function.Function;
 
 public class SeleniumHelper {
 
@@ -30,6 +34,15 @@ public class SeleniumHelper {
     public static void waitMethod(String xpath, WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+    }
+    public static void waitClickAtPoint(WebDriver driver, WebElement element){
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 5);
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+            element.click();
+        }catch (Exception e){
+            System.out.println("Error from Code: " + e.getMessage());
+        }
     }
 
     public static MediaEntityModelProvider getScreenshot(WebDriver driver) throws IOException {
