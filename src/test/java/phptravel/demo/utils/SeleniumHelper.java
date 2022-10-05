@@ -31,6 +31,15 @@ public class SeleniumHelper {
         WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
     }
+    public static void waitClickAtPoint(WebDriver driver, WebElement element){
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 5);
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+            element.click();
+        }catch (Exception e){
+            System.out.println("Error from Code: " + e.getMessage());
+        }
+    }
 
     public static MediaEntityModelProvider getScreenshot(WebDriver driver) throws IOException {
         String path = takeScreenshot(driver);

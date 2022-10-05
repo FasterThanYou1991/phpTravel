@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 public class HotelSearchTest extends BaseTest {
 
-    private String cityName = "London";
+    private String cityName = "Dublin";
     @Test
     public void hotelSearchTest() throws IOException {
         LocalDate day = LocalDate.now();
