@@ -48,5 +48,10 @@ public class HotelSearchTest extends BaseTest {
         hotelSearchPage.setNationality();
         test.log(Status.PASS, "City name, checkIn, checkOut, travellers and nationality was set correctly ", SeleniumHelper.getScreenshot(driver));
         hotelSearchPage.performSearch();
+
+        ResultPage resultPage = new ResultPage(driver);
+        resultPage.assertionHeader(driver);
+        resultPage.getHotelNames();
+        test.log(Status.PASS,"Result of hotel names", SeleniumHelper.getScreenshot(driver));
     }
 }
