@@ -78,13 +78,6 @@ public class HotelSearchPage{
                 break;
             }
         }
-        // Alternative approach for selecting visible day from calendar
-        /*driver.findElements(By.xpath("//td[ @class='day  new' and (text()='3')]"))
-                .stream()
-                .filter(WebElement::isDisplayed)
-                .findFirst()
-                .ifPresent(WebElement::click);*/
-
         Logger.info("CheckIn date was selected: " + dateIn);
     }
 
@@ -102,12 +95,6 @@ public class HotelSearchPage{
                 break;
             }
         }
-        // Alternative approach for selecting visible day from calendar
-        /*driver.findElements(By.xpath("//td[@class='day  new' and (text()='6')]"))
-                .stream()
-                .filter(element -> element.isDisplayed())
-                .findFirst()
-                .ifPresent(element -> element.click());*/
         Logger.info("ChecOut date was selected : " + dateOut);
     }
 
@@ -154,5 +141,38 @@ public class HotelSearchPage{
     public void openSignUpForm() {
         waitMethod("//a[@href='https://phptravels.net/signup']",driver);
         signupButton.click();
+    }
+
+    public void selectDateCheckIn(String number){
+
+        checkin.click();
+        WebElement eval = driver.findElement(By.xpath("//div[contains(@class,'datepicker-days')]/table/tbody"));
+        List<WebElement> days = eval.findElements(By.cssSelector(".day"));
+        int count = days.size();
+        for(int i = 0; i < count; i++)
+        {
+           String text = driver.findElements(By.cssSelector(".day")).get(i).getText();
+           if(text.equalsIgnoreCase(number))
+           {
+               driver.findElements(By.cssSelector(".day")).get(i).click();
+               break;
+           }
+        }
+    }
+
+    public void selectDateCheckOut(String number){
+
+        WebElement eval = driver.findElement(By.xpath("//div[contains(@class,'datepicker-days')]/table/tbody"));
+        List<WebElement> days = eval.findElements(By.cssSelector(".day"));
+        int count = days.size();
+        for(int i = 0; i < count; i++)
+        {
+            String text = driver.findElements(By.cssSelector(".day")).get(i).getText();
+            if(text.equalsIgnoreCase(number))
+            {
+                driver.findElements(By.cssSelector(".day")).get(i).click();
+                break;
+            }
+        }
     }
 }
