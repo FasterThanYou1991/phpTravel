@@ -3,6 +3,7 @@ package phptravel.demo.pages;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -20,6 +21,8 @@ public class HotelSearchPage{
     private WebElement searchHotelSpan;
     @FindBy(xpath = "//input[@class='select2-search__field']")
     private WebElement searchHotelInput;
+    @FindBy(xpath = "//li[@role='alert']//parent::ul[@class='select2-results__options']")
+    private WebElement noCityResultsFound;
     @FindBy(name = "checkin")
     private WebElement checkin;
     @FindBy(name = "checkout")
@@ -55,12 +58,16 @@ public class HotelSearchPage{
     public void setCity(String cityName) {
         waitMethod("//span[@id='select2-hotels_city-container' and @title=' Search by City']", driver);
         searchHotelSpan.click();
-        searchHotelInput.sendKeys(cityName);Logger.info("City Name was entered" + cityName);
-        Logger.info("City Name was entered" + cityName);
-        String xpath = String.format("//li[contains(text(),'%s')]", cityName);
-        waitMethod(xpath,driver);
-        Logger.info("Element with city name exist" + "--> " + cityName);
-        driver.findElement(By.xpath(xpath)).click();
+        searchHotelInput.sendKeys(cityName);
+            Logger.info("City Name was entered: " + cityName);
+            String xpath = String.format("//li[contains(text(),'%s')]", cityName);
+            waitMethod(xpath,driver);
+            Logger.info("Element with city name exist" + "--> " + cityName);
+            driver.findElement(By.xpath(xpath)).click();
+    }
+
+    public void setWrongCity(){
+
     }
 
     public void setCheckIn(String dateIn) {

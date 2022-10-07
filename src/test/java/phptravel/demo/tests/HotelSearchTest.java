@@ -9,6 +9,7 @@ import phptravel.demo.utils.SeleniumHelper;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 
 public class HotelSearchTest extends BaseTest {
@@ -17,14 +18,14 @@ public class HotelSearchTest extends BaseTest {
     LocalDate day = LocalDate.now();
     int currentDayIn = day.getDayOfMonth() + 1;
     int currentDayOut = currentDayIn + 2;
-    ExtentTest test = extentReports.createTest("Search hotel Test");
+
 
     @Test
     public void hotelSearchTest() throws IOException {
-
+        ExtentTest test = extentReports.createTest("Search hotel Test");
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
         hotelSearchPage.setCity(cityName);
-        hotelSearchPage.selectDateCheckIn(String.valueOf(currentDayIn));
+        hotelSearchPage.setCheckIn(String.valueOf(currentDayIn));
         hotelSearchPage.setCheckOut(String.valueOf(currentDayOut));
         hotelSearchPage.setTravelers();
         hotelSearchPage.setNationality();
@@ -40,8 +41,11 @@ public class HotelSearchTest extends BaseTest {
     @Test
     //This test was created for checking new solution for handling date-picker into calendar
     public void approachDatePicker() throws IOException {
+        ExtentTest test = extentReports.createTest("Search hotel Test");
+        DataDriven dataDriven = new DataDriven();
+        ArrayList<String> data = dataDriven.getData("TestCases");
         HotelSearchPage hotelSearchPage = new HotelSearchPage(driver);
-        hotelSearchPage.setCity(cityName);
+        hotelSearchPage.setCity(data.get(3));
         hotelSearchPage.selectDateCheckIn((String.valueOf(currentDayIn)));
         hotelSearchPage.selectDateCheckOut(String.valueOf(currentDayOut));
         hotelSearchPage.setTravelers();

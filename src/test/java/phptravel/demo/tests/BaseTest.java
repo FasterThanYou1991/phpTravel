@@ -46,7 +46,7 @@ public class BaseTest extends SeleniumHelper {
     @BeforeTest
     public void setup() throws IOException {
         driver = DriverFactory.getDriver();
-        driver.manage().window();
+        driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.get("https://phptravels.net/hotels");
     }

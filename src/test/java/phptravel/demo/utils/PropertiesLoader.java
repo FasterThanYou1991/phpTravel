@@ -14,6 +14,5 @@ public class PropertiesLoader {
         properties.load(inputStream);
 
         return properties.getProperty(propertyname);
-
     }
 }
