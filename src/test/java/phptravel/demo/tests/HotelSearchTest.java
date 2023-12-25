@@ -1,6 +1,5 @@
 package phptravel.demo.tests;
 
-import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import org.testng.annotations.Test;
 import phptravel.demo.pages.HotelSearchPage;
@@ -13,11 +12,10 @@ import java.time.LocalDate;
 
 public class HotelSearchTest extends BaseTest {
 
-    private String cityName = "London";
+    private final String cityName = "London";
     LocalDate day = LocalDate.now();
     int currentDayIn = day.getDayOfMonth() + 1;
     int currentDayOut = currentDayIn + 2;
-    ExtentTest test = extentReports.createTest("Search hotel Test");
 
     @Test
     public void hotelSearchTest() throws IOException {
